@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Responsive Video Background</title>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .features-box {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 10px;
+      background: white;
+      padding: 20px;
+      text-align: center;
+      min-height: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .features-box:hover {
+      transform: scale(1.1);
+      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .features-box img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .features-box h6 {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      color: black;
+    }
+
+    .features-box p {
+      font-size: 14px;
+      color: black;
+      margin-top: 5px;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .nav-link {
+      margin-left: 1.5rem;
+    }
+
+    .nav-link:hover {
+      background-color: var(--bs-primary);
+      color: white !important;
+      border-radius: 0.5rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .navbar-brand img {
+      height: 50px;
+      object-fit: contain;
+    }
+
+    .head {
+      margin-top: 30px;
+    }
+
+    @media (max-width: 576px) {
+      .video-container {
+        height: 60vh;
+      }
+
+      h1 {
+        font-size: 45px;
+      }
+
+      h2 {
+        font-size: 25px;
+      }
+
+      h5 {
+        font-size: 25px;
+      }
+
+      .navbar-collapse {
+        text-align: center;
+      }
+
+      .nav-item {
+        margin-bottom: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary bg-primary" data-bs-theme="light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="logo9.png" alt="Brand Logo" height="50">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="newmeet.html">New Meeting</a></li>
+          <li class="nav-item"><a class="nav-link active" href="sec1.html">Schedule</a></li>
+          <li class="nav-item"><a class="nav-link active" href="calender.html">Calendar</a></li>
+          <li class="nav-item"><a class="nav-link active" href="join.html">Join</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#">More</a></li>
+        </ul>
+
+        <!-- Login & Sign Up Buttons -->
+        <div class="d-flex">
+          <a href="login.html" class="btn btn-light me-2">Login</a>
+          <a href="signup.html" class="btn btn-dark">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Video Background -->
+  <div class="video-container">
+    <video src="vd4.mp4" autoplay muted loop></video>
+    <div class="content">
+      <h1>MADE FOR YOUR<br>EVERY MOVE</h1>
+      <h5>ScheduleHub</h5>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="head">
+    <center><h2>Power up Your Scheduling</h2></center>
+  </div><br>
+
+  <section class="bg-white text-white">
+    <div class="bg-secondary">
+      <div class="row">
+        <div class="col-md-12 mx-auto text-center">
+          <h3 class="mb-4 text-uppercase">Features</h3>
+        </div>
+      </div>
+      
+      <div class="row justify-content-center">
+        
+        <div class="col-md-4 text-center">
+          <div class="features-box p-4 shadow">
+            <img src="ad1.webp" class="img-fluid">
+            <h6 class="title">Audio To Text</h6>
+            <p>Convert meeting audio into searchable text.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 text-center">
+          <div class="features-box p-4 shadow">
+            <img src="a2.png" class="img-fluid">
+            <h6 class="title">User Friendly Interface</h6>
+            <p>Simple & intuitive design for easy scheduling.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 text-center">
+          <div class="features-box p-4 shadow">
+            <img src="a3.jpg" class="img-fluid">
+            <h6 class="title">Searchable Meeting Archives</h6>
+            <p>Find past meetings quickly with search functionality.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 text-center">
+          <div class="features-box p-4 shadow">
+            <img src="ad5.jpg" class="img-fluid">
+            <h6 class="title">Collaboration Tools</h6>
+            <p>Work together efficiently with built-in tools.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 text-center">
+          <div class="features-box p-4 shadow">
+            <img src="kk.jpg" class="img-fluid">
+            <h6 class="title">Dedicated Support</h6>
+            <p>24/7 customer support to assist you anytime.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 text-center">
+          <div class="features-box p-4 shadow">
+            <img src="kk2.webp" class="img-fluid">
+            <h6 class="title">Interview Preparation</h6>
+            <p>Resources to help you ace your interviews.</p>
+          </div>
+        </div>
+        
+      </div>  
+    </div>
+  </section><br>
+
+  <!-- Footer -->
+  <div class="bg-primary text-center py-3 w-100">
+    <h6 class="text-white m-0">All rights reserved</h6>
+  </div>
+
+</body>
+</html>

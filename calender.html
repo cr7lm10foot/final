@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calendar with Holidays</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .calendar-container {
+            max-width: 600px;
+            margin: 30px auto;
+        }
+        .calendar-table {
+            width: 100%;
+            table-layout: fixed;
+        }
+        .calendar-table th, .calendar-table td {
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #dee2e6;
+        }
+        .holiday {
+            background-color: #ffcccc;
+            color: red;
+            font-weight: bold;
+        }
+        .today {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container text-center mt-4">
+    <h1 class="text-primary">📅 Calendar with Holidays</h1>
+    
+    <div class="calendar-container p-4 shadow bg-white rounded">
+        <div class="d-flex justify-content-between mb-3">
+            <select id="monthSelect" class="form-select w-50"></select>
+            <select id="yearSelect" class="form-select w-25"></select>
+        </div>
+
+        <table class="calendar-table table table-bordered">
+            <thead>
+                <tr class="bg-secondary text-white">
+                    <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+                </tr>
+            </thead>
+            <tbody id="calendarBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const monthSelect = document.getElementById("monthSelect");
+        const yearSelect = document.getElementById("yearSelect");
+        const calendarBody = document.getElementById("calendarBody");
+
+        const holidays = {
+            "1-1": "New Year",
+            "2-14": "Valentine's Day",
+            "3-17": "St. Patrick's Day",
+            "7-4": "Independence Day",
+            "10-31": "Halloween",
+            "12-25": "Christmas"
+        };
+
+        function generateCalendar(month, year) {
+            calendarBody.innerHTML = "";
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            let date = 1;
+
+            for (let i = 0; i < 6; i++) {
+                let row = document.createElement("tr");
+                for (let j = 0; j < 7; j++) {
+                    let cell = document.createElement("td");
+
+                    if (i === 0 && j < firstDay) {
+                        cell.innerHTML = "";
+                    } else if (date > daysInMonth) {
+                        break;
+                    } else {
+                        cell.innerHTML = date;
+
+                        let key = `${month + 1}-${date}`;
+                        if (holidays[key]) {
+                            cell.classList.add("holiday");
+                            cell.title = holidays[key];
+                        }
+
+                        if (date === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                            cell.classList.add("today");
+                        }
+
+                        date++;
+                    }
+
+                    row.appendChild(cell);
+                }
+                calendarBody.appendChild(row);
+                if (date > daysInMonth) break;
+            }
+        }
+
+        function populateSelectors() {
+            const months = [
+                "January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"
+            ];
+
+            const currentYear = new Date().getFullYear();
+            const currentMonth = new Date().getMonth();
+
+            months.forEach((month, index) => {
+                let option = new Option(month, index);
+                monthSelect.add(option);
+            });
+
+            for (let year = currentYear - 5; year <= currentYear + 5; year++) {
+                let option = new Option(year, year);
+                yearSelect.add(option);
+            }
+
+            monthSelect.value = currentMonth;
+            yearSelect.value = currentYear;
+            generateCalendar(currentMonth, currentYear);
+        }
+
+        monthSelect.addEventListener("change", () => generateCalendar(+monthSelect.value, +yearSelect.value));
+        yearSelect.addEventListener("change", () => generateCalendar(+monthSelect.value, +yearSelect.value));
+
+        populateSelectors();
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

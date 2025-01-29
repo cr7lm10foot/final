@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Join Meeting</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .form-control {
+            margin-bottom: 15px;
+        }
+        .btn-primary, .btn-danger {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2 class="text-primary">Join a Meeting</h2>
+    
+    <form>
+      <!-- Meeting ID -->
+      <input type="text" class="form-control" placeholder="Enter Meeting ID" required>
+
+      <!-- Display Name -->
+      <input type="text" class="form-control" placeholder="Enter Display Name" required>
+
+      <!-- Checkboxes for Audio & Video -->
+      <div class="form-check text-start">
+        <input class="form-check-input" type="checkbox" id="connectAudio" checked>
+        <label class="form-check-label" for="connectAudio">Connect to Audio</label>
+      </div>
+      <div class="form-check text-start">
+        <input class="form-check-input" type="checkbox" id="connectVideo" checked>
+        <label class="form-check-label" for="connectVideo">Turn on Video</label>
+      </div>
+
+      <!-- Buttons -->
+      <button type="submit" class="btn btn-primary">Join Meeting</button>
+      <button type="button" class="btn btn-danger" onclick="cancelJoin()">Cancel</button>
+    </form>
+  </div>
+
+  <script>
+    function cancelJoin() {
+        window.location.href = 'main_page.html'; // Replace with actual main page URL
+    }
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
