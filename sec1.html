@@ -5,6 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Meeting Scheduler</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .scheduler-container {
+            max-width: 600px;
+            margin: 30px auto;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .meeting-item {
+            animation: popIn 0.3s ease-in-out;
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container mt-5 text-center">
+        <h1 class="text-primary">📅 Meeting Scheduler</h1>
+        <div class="scheduler-container p-4 shadow bg-white rounded">
+            <form id="meetingForm">
+                <div class="mb-3">
+                    <label for="meetingTitle" class="form-label">📌 Title:</label>
+                    <input type="text" class="form-control" id="meetingTitle" required>
+                </div>
+                <div class="mb-3">
+                    <label for="meetingDate" class="form-label">📅 Date:</label>
+                    <input type="date" class="form-control" id="meetingDate" required>
+                </div>
+                <div class="mb-3">
+                    <label for="meetingTime" class="form-label">⏰ Time:</label>
+                    <input type="time" class="form-control" id="meetingTime" required>
+                </div>
+                <div class="mb-3">
+                    <label for="meetingAgenda" class="form-label">📝 Agenda:</label>
+                    <textarea class="form-control" id="meetingAgenda" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">📌 Schedule</button>
+            </form>
+            <div id="meetingList" class="mt-3"></div>
+        </div>
+    </div>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const meetingForm = document.getElementById("meetingForm");
@@ -12,78 +61,24 @@
 
             meetingForm.addEventListener("submit", (event) => {
                 event.preventDefault();
-
                 const title = document.getElementById("meetingTitle").value;
                 const date = document.getElementById("meetingDate").value;
                 const time = document.getElementById("meetingTime").value;
                 const agenda = document.getElementById("meetingAgenda").value;
 
                 const meetingItem = document.createElement("div");
-                meetingItem.classList.add("alert", "alert-info", "mt-3");
+                meetingItem.classList.add("alert", "alert-info", "mt-3", "meeting-item");
                 meetingItem.innerHTML = `
-                    <strong>${title}</strong><br>
+                    <strong>📌 ${title}</strong><br>
                     📅 <b>Date:</b> ${date} | ⏰ <b>Time:</b> ${time} <br>
                     📝 <b>Agenda:</b> ${agenda}
                 `;
-
-                const meetingDateTime = new Date(`${date} ${time}`);
-                const currentDateTime = new Date();
-
-                if (meetingDateTime > currentDateTime) {
-                    const timeDiff = meetingDateTime.getTime() - currentDateTime.getTime();
-                    const minutesDiff = Math.floor(timeDiff / (1000 * 60));
-
-                    if (minutesDiff <= 15) {
-                        alert(`Your meeting "${title}" is starting in ${minutesDiff} minutes!`);
-                    }
-                }
 
                 meetingList.appendChild(meetingItem);
                 meetingForm.reset();
             });
         });
     </script>
-</head>
-<body class="bg-light">
-
-    <div class="container mt-5">
-        <h1 class="text-center text-primary">📅 Meeting Scheduler</h1>
-        
-        <div class="row mt-4">
-            <div class="col-md-6">
-                <div class="card shadow p-4">
-                    <h2 class="text-center text-primary">Schedule a Meeting</h2>
-                    <form id="meetingForm">
-                        <div class="mb-3">
-                            <label for="meetingTitle" class="form-label">Title:</label>
-                            <input type="text" class="form-control" id="meetingTitle" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="meetingDate" class="form-label">Date:</label>
-                            <input type="date" class="form-control" id="meetingDate" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="meetingTime" class="form-label">Time:</label>
-                            <input type="time" class="form-control" id="meetingTime" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="meetingAgenda" class="form-label">Agenda:</label>
-                            <textarea class="form-control" id="meetingAgenda" rows="3" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Schedule</button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card shadow p-4">
-                    <h2 class="text-center text-danger">Scheduled Meetings</h2>
-                    <div id="meetingList" class="mt-3"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

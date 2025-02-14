@@ -4,9 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <title>Contact Us</title>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <style>
+    /* Custom Styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      padding-top: 70px; /* Add padding to body to account for fixed navbar */
+    }
+
+    .navbar {
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: fixed; /* Make navbar fixed */
+      top: 0;
+      width: 100%;
+      z-index: 1000; /* Ensure navbar stays on top */
+    }
+
     .features-box {
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       border-radius: 10px;
@@ -72,7 +88,7 @@
     }
 
     .nav-link:hover {
-      background-color: var(--bs-primary);
+      background-color: #212529; /* Changed from var(--bs-primary) */
       color: white !important;
       border-radius: 0.5rem;
       transition: background-color 0.3s ease;
@@ -142,13 +158,38 @@
       width: 100%;
       padding: 10px;
       border-radius: 5px;
+      background-color: #212529; /* Changed from default primary color */
+      border-color: #212529; /* Changed from default primary color */
+    }
+
+    /* Increase Font Icon Size */
+    .features-box i {
+      font-size: 4rem; /* Increased from 3rem to 4rem */
+      color: #212529;
+      margin-bottom: 1rem;
+    }
+    .footer {
+      background: #212529;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .footer a:hover {
+      color: #ccc;
     }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg bg-body-tertiary bg-primary" data-bs-theme="light">
+  <!-- Fixed Navbar -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="light">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <img src="logo9.png" alt="Brand Logo" height="50">
@@ -159,17 +200,17 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-          <li class="nav-item"><a class="nav-link active" href="newmeet.html">New Meeting</a></li>
-          <li class="nav-item"><a class="nav-link active" href="sec1.html">Schedule</a></li>
-          <li class="nav-item"><a class="nav-link active" href="calender.html">Calendar</a></li>
-          <li class="nav-item"><a class="nav-link active" href="join.html">Join</a></li>
-          <li class="nav-item"><a class="nav-link active" href="#">More</a></li>
+          <li class="nav-item"><a class="nav-link" href="newmeet.html">New Meeting</a></li>
+          <li class="nav-item"><a class="nav-link" href="sec1.html">Schedule</a></li>
+          <li class="nav-item"><a class="nav-link" href="calender.html">Calendar</a></li>
+          <li class="nav-item"><a class="nav-link" href="join.html">Join</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">More</a></li>
         </ul>
 
         <!-- Login & Sign Up Buttons -->
         <div class="d-flex">
           <a href="login.html" class="btn btn-light me-2">Login</a>
-          <a href="signup.html" class="btn btn-dark">Sign Up</a>
+          <a href="signin.html" class="btn btn-dark">Sign Up</a>
         </div>
       </div>
     </div>
@@ -184,72 +225,69 @@
     </div>
   </div>
 
-  <!-- Features Section -->
-  <div class="head">
-    <center><h2>Power up Your Scheduling</h2></center>
-  </div><br>
 
-  <section class="bg-white text-white">
-    <div class="bg-secondary">
-      <div class="row">
-        <div class="col-md-12 mx-auto text-center">
-          <h3 class="mb-4 text-uppercase">Features</h3>
+  <!-- Features Section -->
+  <section class="container my-5">
+    <div class="text-center mb-5">
+      <h2 class="animate__animated animate__fadeInUp">Power Up Your Scheduling</h2>
+      <p class="text-muted animate__animated animate__fadeInUp">Discover the features that make ScheduleHub the best choice for your scheduling needs.</p>
+    </div>
+    <div class="row">
+      <div class="col-md-4 animate__animated animate__fadeInLeft">
+        <div class="features-box">
+          <i class="fas fa-microphone-alt"></i>
+          <h6>Audio To Text</h6>
+          <p>Convert meeting audio into searchable text.</p>
         </div>
       </div>
-      
-      <div class="row justify-content-center">
-        
-        <div class="col-md-4 text-center">
-          <div class="features-box p-4 shadow">
-            <img src="ad1.webp" class="img-fluid">
-            <h6 class="title">Audio To Text</h6>
-            <p>Convert meeting audio into searchable text.</p>
-          </div>
+      <div class="col-md-4 animate__animated animate__fadeInUp">
+        <div class="features-box">
+          <i class="fas fa-user-friends"></i>
+          <h6>User Friendly Interface</h6>
+          <p>Simple & intuitive design for easy scheduling.</p>
         </div>
-
-        <div class="col-md-4 text-center">
-          <div class="features-box p-4 shadow">
-            <img src="a2.png" class="img-fluid">
-            <h6 class="title">User Friendly Interface</h6>
-            <p>Simple & intuitive design for easy scheduling.</p>
-          </div>
+      </div>
+      <div class="col-md-4 animate__animated animate__fadeInRight">
+        <div class="features-box">
+          <i class="fas fa-search"></i>
+          <h6>Searchable Archives</h6>
+          <p>Find past meetings quickly with search functionality.</p>
         </div>
-
-        <div class="col-md-4 text-center">
-          <div class="features-box p-4 shadow">
-            <img src="a3.jpg" class="img-fluid">
-            <h6 class="title">Searchable Meeting Archives</h6>
-            <p>Find past meetings quickly with search functionality.</p>
-          </div>
-        </div>
-
-        <div class="col-md-4 text-center">
-          <div class="features-box p-4 shadow">
-            <img src="ad5.jpg" class="img-fluid">
-            <h6 class="title">Collaboration Tools</h6>
-            <p>Work together efficiently with built-in tools.</p>
-          </div>
-        </div>
-
-        <div class="col-md-4 text-center">
-          <div class="features-box p-4 shadow">
-            <img src="kk.jpg" class="img-fluid">
-            <h6 class="title">Dedicated Support</h6>
-            <p>24/7 customer support to assist you anytime.</p>
-          </div>
-        </div>
-
-        <div class="col-md-4 text-center">
-          <div class="features-box p-4 shadow">
-            <img src="kk2.webp" class="img-fluid">
-            <h6 class="title">Interview Preparation</h6>
-            <p>Resources to help you ace your interviews.</p>
-          </div>
-        </div>
-        
-      </div>  
+      </div>
     </div>
-  </section><br>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="animate__animated animate__fadeInUp">What Our Users Say</h2>
+      </div>
+      <div class="row">
+        <div class="col-md-4 animate__animated animate__fadeInLeft">
+          <div class="testimonial-card">
+            <img src="" alt="User 1">
+            <h5>John Doe</h5>
+            <p>"ScheduleHub has transformed the way I manage my meetings. Highly recommended!"</p>
+          </div>
+        </div>
+        <div class="col-md-4 animate__animated animate__fadeInUp">
+          <div class="testimonial-card">
+            <img src="" alt="User 2">
+            <h5>Jane Smith</h5>
+            <p>"The interface is so intuitive, and the features are incredibly useful."</p>
+          </div>
+        </div>
+        <div class="col-md-4 animate__animated animate__fadeInRight">
+          <div class="testimonial-card">
+            <img src="" alt="User 3">
+            <h5>Mike Johnson</h5>
+            <p>"The best scheduling tool I've ever used. It saves me so much time!"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Contact Us Section -->
   <section class="container my-5">
@@ -291,9 +329,51 @@
   </section>
 
   <!-- Footer -->
-  <div class="bg-primary text-center py-3 w-100">
-    <h6 class="text-white m-0">All rights reserved</h6>
-  </div>
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2023 ScheduleHub. All rights reserved.</p>
+      <div>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Highlight active nav link based on current page
+    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+    const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
+  
+    navLinks.forEach(link => {
+      if (link.getAttribute("href") === currentPage) {
+        link.classList.add("active");
+      }
+    });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const navToggler = document.querySelector(".navbar-toggler");
+      const navCollapse = document.querySelector(".navbar-collapse");
+  
+      document.querySelectorAll(".nav-link").forEach(item => {
+        item.addEventListener("click", () => {
+          if (navCollapse.classList.contains("show")) {
+            navToggler.click(); // Close the navbar when a link is clicked
+          }
+        });
+      });
+  
+      // Ensure navbar toggler appears when page reloads
+      window.addEventListener("pageshow", function() {
+        if (navCollapse.classList.contains("show")) {
+          navToggler.classList.remove("collapsed");
+        }
+      });
+    });  
+  </script>
+
+
 
 </body>
 </html>
