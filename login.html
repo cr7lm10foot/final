@@ -35,6 +35,14 @@
             transform: translateY(-50%);
             color: #6c757d;
         }
+        .user-list {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        .user-list div {
+            margin: 3px 0;
+        }
     </style>
 </head>
 <body>
@@ -52,6 +60,13 @@
             <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>
         <p id="message" class="mt-3 text-danger"></p>
+        
+        <div class="user-list">
+            <div><strong>Sample Users:</strong></div>
+            <div>Username: admin | Password: 1234</div>
+            <div>Username: user1 | Password: 1234</div>
+            <div>Username: user2 | Password: 1234</div>
+        </div>
     </div>
 
     <script>
@@ -61,12 +76,21 @@
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
     
-            // Define a sample username and password
-            const correctUsername = "admin";
-            const correctPassword = "1234";
+            // Define valid users
+            const users = [
+                { username: "admin", password: "1234" },
+                { username: "user1", password: "1234" },
+                { username: "user2", password: "1234" }
+            ];
     
-            if (username === correctUsername && password === correctPassword) {
-                localStorage.setItem("isLoggedIn", "true"); // Store login state
+            // Check if credentials match any user
+            const validUser = users.find(user => 
+                user.username === username && user.password === password
+            );
+    
+            if (validUser) {
+                localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("currentUser", username);
                 window.location.href = "index.html"; // Redirect to main page
             } else {
                 document.getElementById("message").innerText = "Invalid username or password!";
@@ -84,11 +108,11 @@
             }
     
             document.getElementById("logoutBtn").addEventListener("click", function () {
-                localStorage.removeItem("isLoggedIn"); // Clear login status
+                localStorage.removeItem("isLoggedIn");
+                localStorage.removeItem("currentUser");
                 window.location.reload(); // Reload the page
             });
         });
     </script>
-    
 </body>
 </html>
