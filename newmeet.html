@@ -14,7 +14,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #f8f9fa; /* Light background to match the main page */
+            background: #f8f9fa;
         }
         .container {
             text-align: center;
@@ -25,18 +25,6 @@
             max-width: 500px;
             width: 100%;
         }
-        .toggle-group {
-            margin: 20px 0;
-        }
-        .toggle-group label {
-            font-size: 18px;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-        .toggle-group input[type="checkbox"] {
-            transform: scale(1.5);
-            margin-right: 10px;
-        }
         .btn-primary, .btn-danger {
             margin: 10px;
             padding: 10px 20px;
@@ -44,59 +32,61 @@
             border-radius: 5px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .btn-primary:hover, .btn-danger:hover {
-            transform: scale(1.05);
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        .form-control {
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-        h2 {
-            font-size: 28px;
-            font-weight: bold;
-            color: #212529; /* Dark color to match the main page */
-            margin-bottom: 20px;
-        }
-        .fa-icon {
-            font-size: 24px;
-            margin-right: 10px;
-            color: #212529; /* Dark color to match the main page */
-        }
     </style>
 </head>
 <body>
   <div class="container animate__animated animate__fadeInUp">
-    <h2><i class="fas fa-video fa-icon"></i>New Meeting Setup</h2>
-    <div class="toggle-group">
-      <input type="password" placeholder="Use Personal Meeting ID" class="form-control animate__animated animate__fadeIn">
-      <br>
-      <label for="video-toggle" class="animate__animated animate__fadeInLeft">
-        <i class="fas fa-video fa-icon"></i>Video:
-      </label>
-      <input type="checkbox" id="video-toggle" checked class="animate__animated animate__fadeInLeft">
-      <label for="audio-toggle" class="animate__animated animate__fadeInRight">
-        <i class="fas fa-microphone fa-icon"></i>Audio:
-      </label>
-      <input type="checkbox" id="audio-toggle" checked class="animate__animated animate__fadeInRight">
-    </div>
-    <div class="mt-4">
-      <button class="btn btn-primary animate__animated animate__fadeInUp" type="submit">
+    <h2><i class="fas fa-video"></i> Start a New Meeting</h2>
+    
+    <input type="text" id="meetingID" class="form-control" placeholder="Enter Meeting ID (or leave blank)">
+    
+    <button class="btn btn-primary animate__animated animate__fadeInUp" onclick="startMeeting()">
         <i class="fas fa-play-circle"></i> Start Meeting
-      </button>
-      <button class="btn btn-danger animate__animated animate__fadeInUp" type="button" onclick="cancelMeeting()">
+    </button>
+    
+    <button class="btn btn-danger animate__animated animate__fadeInUp" onclick="cancelMeeting()">
         <i class="fas fa-times-circle"></i> Cancel
-      </button>
-    </div>
+    </button>
+    
+    <div id="meet"></div>
   </div>
 
+  <script src="https://meet.jit.si/external_api.js"></script>
   <script>
+    function generateMeetingID() {
+        return "Meeting-" + Math.random().toString(36).substr(2, 9);
+    }
+
+    function startMeeting() {
+        let meetingID = document.getElementById("meetingID").value.trim();
+        if (!meetingID) {
+            meetingID = generateMeetingID();
+            document.getElementById("meetingID").value = meetingID;
+        }
+
+        // Store the meeting ID in localStorage so users can join
+        localStorage.setItem("activeMeetingID", meetingID);
+
+        const domain = "meet.jit.si";
+        const options = {
+            roomName: meetingID,
+            width: "100%",
+            height: 600,
+            parentNode: document.getElementById("meet"),
+            configOverwrite: {
+                startWithVideoMuted: false,
+                startWithAudioMuted: false
+            }
+        };
+
+        window.open(`https://${domain}/${meetingID}`, "_blank");
+
+        const api = new JitsiMeetExternalAPI(domain, options);
+    }
+
     function cancelMeeting() {
-        window.location.href = 'main_page.html'; // Replace with your actual main page URL
+        window.location.href = 'main_page.html';
     }
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

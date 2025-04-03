@@ -211,6 +211,8 @@
         <div class="d-flex">
           <a href="login.html" class="btn btn-light me-2">Login</a>
           <a href="signin.html" class="btn btn-dark">Sign Up</a>
+          <a href="#" class="btn btn-danger" id="logoutBtn" style="display: none;">Logout</a>
+
         </div>
       </div>
     </div>
@@ -378,6 +380,29 @@
       });
     });  
   </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+      // If user is NOT logged in, redirect to login page
+      if (isLoggedIn !== "true") {
+          window.location.href = "login.html"; // Redirect to login page
+      } else {
+          // Hide Login and Sign Up buttons
+          document.querySelector(".btn-light").style.display = "none"; 
+          document.querySelector(".btn-dark").style.display = "none";  
+          document.getElementById("logoutBtn").style.display = "block"; 
+      }
+
+      // Logout functionality
+      document.getElementById("logoutBtn").addEventListener("click", function () {
+          localStorage.removeItem("isLoggedIn"); // Clear login status
+          window.location.href = "login.html"; // Redirect to login page
+      });
+  });
+</script>
+
 
 
 
