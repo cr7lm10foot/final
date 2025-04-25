@@ -49,7 +49,8 @@
             display: none;
         }
         #meetingFormContainer {
-            display: block;
+            display: none;
+            margin-bottom: 30px;
         }
         .notification-badge {
             position: fixed;
@@ -64,6 +65,9 @@
             z-index: 1000;
             min-width: 300px;
         }
+        #meetingListContainer {
+            margin-top: 30px;
+        }
     </style>
 </head>
 <body class="bg-light">
@@ -73,32 +77,11 @@
             <a class="navbar-brand" href="#">
                 <i class="fas fa-calendar-alt"></i> Meeting Scheduler
             </a>
-            <div class="d-flex">
-                <button id="logoutBtn" class="btn btn-outline-light" style="display: none;">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </div>
         </div>
     </nav>
 
     <div class="container">
-        <div id="authContainer">
-            <div class="scheduler-container p-4 shadow bg-white rounded text-center">
-                <h2 class="mb-4"><i class="fa-solid fa-calendar-days"></i> Login</h2>
-                <form id="loginForm">
-                    <div class="mb-3">
-                        <input type="text" id="username" class="form-control" placeholder="Username" required>
-                    </div>
-                    <div class="mb-3">
-                        <input type="password" id="password" class="form-control" placeholder="Password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
-                </form>
-                <p id="loginMessage" class="mt-3 text-danger"></p>
-            </div>
-        </div>
-
-        <div id="appContainer" style="display: none;">
+        <div id="appContainer">
             <div class="scheduler-container p-4 shadow bg-white rounded">
                 <div class="action-buttons">
                     <button id="newMeetingBtn" class="btn btn-primary">
@@ -134,7 +117,7 @@
                     </form>
                 </div>
                 
-                <div id="meetingList" class="mt-4">
+                <div id="meetingListContainer">
                     <h3 class="text-center mb-3">Upcoming Meetings</h3>
                     <div id="meetingsContainer"></div>
                 </div>
@@ -165,72 +148,31 @@
         const toastTitle = document.getElementById('toastTitle');
 
         // DOM elements
-        const authContainer = document.getElementById('authContainer');
         const appContainer = document.getElementById('appContainer');
-        const loginForm = document.getElementById('loginForm');
-        const logoutBtn = document.getElementById('logoutBtn');
         const meetingForm = document.getElementById('meetingForm');
         const meetingsContainer = document.getElementById('meetingsContainer');
-        const loginMessage = document.getElementById('loginMessage');
         const newMeetingBtn = document.getElementById('newMeetingBtn');
         const cancelMeetingBtn = document.getElementById('cancelMeetingBtn');
         const cancelFormBtn = document.getElementById('cancelFormBtn');
         const submitMeetingBtn = document.getElementById('submitMeetingBtn');
         const formTitle = document.getElementById('formTitle');
         const notificationBadge = document.getElementById('notificationBadge');
+        const meetingFormContainer = document.getElementById('meetingFormContainer');
 
         // Sample data storage
         let meetings = JSON.parse(localStorage.getItem('meetings')) || [];
-        let notifications = JSON.parse(localStorage.getItem('notifications')) || [];
         let currentMeetingId = null;
-        let users = [
-            { username: 'admin', password: '1234', name: 'Administrator' },
-            { username: 'user1', password: '1234', name: 'User One' },
-            { username: 'user2', password: '1234', name: 'User Two' }
-        ];
 
         // Initialize the app
         document.addEventListener("DOMContentLoaded", function() {
-            const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-            
-            if (isLoggedIn) {
-                showApp();
-            } else {
-                showAuth();
-            }
-            
             setupEventListeners();
             renderMeetings();
-            checkNotifications();
         });
 
         function setupEventListeners() {
-            // Login form
-            loginForm.addEventListener("submit", function(event) {
-                event.preventDefault();
-                const username = document.getElementById("username").value;
-                const password = document.getElementById("password").value;
-                
-                const user = users.find(u => u.username === username && u.password === password);
-                
-                if (user) {
-                    localStorage.setItem("isLoggedIn", "true");
-                    localStorage.setItem("currentUser", JSON.stringify(user));
-                    showApp();
-                } else {
-                    loginMessage.textContent = "Invalid username or password!";
-                }
-            });
-
-            // Logout button
-            logoutBtn.addEventListener("click", function() {
-                localStorage.removeItem("isLoggedIn");
-                localStorage.removeItem("currentUser");
-                showAuth();
-            });
-
             // New meeting button
             newMeetingBtn.addEventListener('click', () => {
+                meetingFormContainer.style.display = 'block';
                 resetForm();
                 formTitle.textContent = 'Schedule a New Meeting';
                 submitMeetingBtn.textContent = '📌 Schedule Meeting';
@@ -244,27 +186,24 @@
                 const meeting = meetings.find(m => m.id === currentMeetingId);
                 if (!meeting) return;
                 
-                const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-                
                 if (confirm(`Are you sure you want to cancel "${meeting.title}"?`)) {
                     meeting.status = 'cancelled';
-                    meeting.cancelledBy = currentUser.username;
                     meeting.cancelledAt = new Date().toISOString();
-                    
-                    // Create cancellation notification
-                    createNotification(meeting, 'cancelled');
                     
                     localStorage.setItem('meetings', JSON.stringify(meetings));
                     renderMeetings();
                     resetForm();
                     
                     // Show notification
-                    showNotification(`Meeting Cancelled`, `"${meeting.title}" has been cancelled by ${currentUser.username}`);
+                    showNotification(`Meeting Cancelled`, `"${meeting.title}" has been cancelled`);
                 }
             });
 
             // Cancel form button
-            cancelFormBtn.addEventListener('click', resetForm);
+            cancelFormBtn.addEventListener('click', () => {
+                resetForm();
+                meetingFormContainer.style.display = 'none';
+            });
 
             // Meeting form submission
             meetingForm.addEventListener("submit", function(event) {
@@ -274,7 +213,6 @@
                 const date = document.getElementById("meetingDate").value;
                 const time = document.getElementById("meetingTime").value;
                 const agenda = document.getElementById("meetingAgenda").value;
-                const currentUser = JSON.parse(localStorage.getItem("currentUser"));
                 
                 if (currentMeetingId) {
                     // Update existing meeting
@@ -297,49 +235,19 @@
                         date,
                         time,
                         agenda,
-                        createdBy: currentUser.username,
                         createdAt: new Date().toISOString(),
                         status: 'scheduled'
                     };
                     meetings.push(meeting);
                     
-                    // Create new meeting notification
-                    createNotification(meeting, 'scheduled');
                     showNotification(`New Meeting Scheduled`, `"${title}" has been scheduled for ${date} at ${time}`);
                 }
                 
                 localStorage.setItem('meetings', JSON.stringify(meetings));
                 renderMeetings();
                 resetForm();
+                meetingFormContainer.style.display = 'none';
             });
-        }
-
-        function createNotification(meeting, action) {
-            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-            const currentNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
-            
-            // Send to all users except the current user
-            users.forEach(user => {
-                if (user.username !== currentUser.username) {
-                    const notification = {
-                        id: Date.now(),
-                        meetingId: meeting.id,
-                        title: meeting.title,
-                        date: meeting.date,
-                        time: meeting.time,
-                        action: action, // 'scheduled' or 'cancelled'
-                        createdBy: currentUser.username,
-                        recipient: user.username,
-                        read: false,
-                        createdAt: new Date().toISOString()
-                    };
-                    currentNotifications.push(notification);
-                }
-            });
-            
-            localStorage.setItem('notifications', JSON.stringify(currentNotifications));
-            notifications = currentNotifications;
-            updateNotificationBadge();
         }
 
         function showNotification(title, message) {
@@ -348,68 +256,12 @@
             notificationToast.show();
         }
 
-        function checkNotifications() {
-            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-            if (!currentUser) return;
-            
-            const userNotifications = notifications.filter(n => n.recipient === currentUser.username && !n.read);
-            
-            if (userNotifications.length > 0) {
-                // Mark as read
-                notifications.forEach(n => {
-                    if (n.recipient === currentUser.username) {
-                        n.read = true;
-                    }
-                });
-                localStorage.setItem('notifications', JSON.stringify(notifications));
-                
-                // Show the most recent notification
-                const latest = userNotifications[userNotifications.length - 1];
-                const action = latest.action === 'scheduled' ? 'scheduled' : 'cancelled';
-                const message = action === 'scheduled' 
-                    ? `New meeting: "${latest.title}" on ${latest.date} at ${latest.time}`
-                    : `Meeting cancelled: "${latest.title}" by ${latest.createdBy}`;
-                
-                showNotification(action === 'scheduled' ? 'New Meeting' : 'Meeting Cancelled', message);
-            }
-            
-            updateNotificationBadge();
-        }
-
-        function updateNotificationBadge() {
-            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-            if (!currentUser) return;
-            
-            const unreadCount = notifications.filter(n => n.recipient === currentUser.username && !n.read).length;
-            
-            if (unreadCount > 0) {
-                notificationBadge.style.display = 'block';
-                notificationBadge.textContent = unreadCount;
-            } else {
-                notificationBadge.style.display = 'none';
-            }
-        }
-
         function resetForm() {
             currentMeetingId = null;
             meetingForm.reset();
             cancelMeetingBtn.style.display = 'none';
             formTitle.textContent = 'Schedule a New Meeting';
             submitMeetingBtn.textContent = '📌 Schedule Meeting';
-        }
-
-        function showAuth() {
-            authContainer.style.display = 'block';
-            appContainer.style.display = 'none';
-            logoutBtn.style.display = 'none';
-        }
-
-        function showApp() {
-            authContainer.style.display = 'none';
-            appContainer.style.display = 'block';
-            logoutBtn.style.display = 'block';
-            resetForm();
-            checkNotifications();
         }
 
         function renderMeetings() {
@@ -446,11 +298,11 @@
                     <br>
                     📅 <b>Date:</b> ${meeting.date} | ⏰ <b>Time:</b> ${meeting.time} <br>
                     📝 <b>Agenda:</b> ${meeting.agenda} <br>
-                    <small>Created by: ${getUserName(meeting.createdBy)}</small>
+                    <small>Created at: ${new Date(meeting.createdAt).toLocaleString()}</small>
                 `;
                 
-                if (meeting.status === 'cancelled' && meeting.cancelledBy) {
-                    meetingContent += `<br><small>Cancelled by: ${getUserName(meeting.cancelledBy)}</small>`;
+                if (meeting.status === 'cancelled' && meeting.cancelledAt) {
+                    meetingContent += `<br><small>Cancelled at: ${new Date(meeting.cancelledAt).toLocaleString()}</small>`;
                 }
                 
                 meetingItem.innerHTML = meetingContent;
@@ -468,16 +320,12 @@
                         formTitle.textContent = 'Edit Meeting';
                         submitMeetingBtn.textContent = 'Update Meeting';
                         cancelMeetingBtn.style.display = 'block';
+                        meetingFormContainer.style.display = 'block';
                     });
                 }
                 
                 meetingsContainer.appendChild(meetingItem);
             });
-        }
-
-        function getUserName(username) {
-            const user = users.find(u => u.username === username);
-            return user ? user.name : username;
         }
     </script>
 </body>
